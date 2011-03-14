@@ -4,7 +4,7 @@
 # Parses a configuration file defining command line options and
 # default values for global variables.
 #
-# Default values are evaled ... so be careful
+# Default values are evaled ... so be careful.
 # Legal to return \@ or \% ... but read Getopt::Long for what it means and
 # how such cases are treated.
 
@@ -12,7 +12,7 @@ package Getopt::FileConfig;
 
 use strict;
 
-our $VERSION = "1.00";
+our $VERSION = "1.0001";
 
 use Getopt::Long qw(GetOptionsFromArray);
 
@@ -61,7 +61,13 @@ sub add_post_foo
 
 sub parse()
 {
-  # This shit should be split in several routines ... 
+  # Parses options from an array-ref and populates the appropriate
+  # namepsaces or a hash, if it was given with -hash option to ctor.
+  # 
+  # Args:
+  #   $aref  -- array of command-line options; if nothing is passed,
+  #             @ARGV is going to be used.
+
   my $S = shift;
   my $aref = shift;
   $aref = \@ARGV unless defined $aref;
@@ -156,7 +162,9 @@ sub parse()
 
 sub parse_string()
 {
-  # Splits string argument into an array, then calls parse
+  # Splits string argument into an array, then calls parse with this
+  # array.
+
   my ($S, $str) = @_;
   my @a = split(' ', $str);
   # rejoin what was unjustfully split (' and "). what a pain ... do it stupidly
@@ -379,8 +387,8 @@ in the following locations:
   ~/.${base}.rc
 
 If you do specify the C<-defcfg> it is prepended to the above
-list. The first found file is used. You can obtain it from C<< 
-$cfg->{Config} >>. Also, the program name can be obtained from
+list. The first found file is used. You can obtain it from
+C<< $cfg->{Config} >>. Also, the program name can be obtained from
 C<< $cfg->{ProgName} >>.
 
 Will add additional variables enabling a user to fully specify the

@@ -13,11 +13,6 @@ print "1..6\n";
 
 # Test import into namespaces
 {
-  # When warnings are on and config entries are used just once:
-  use vars qw($SIMPLE $AREF $Kazaan::HREF);
-  # or just:
-  # no warnings;
-
   my $cfg = new Getopt::FileConfig(-defcfg=>"pcm.rc");
 
   # print Dumper($cfg->{-defcfg});
@@ -25,6 +20,11 @@ print "1..6\n";
   # Use this instead of ARGV
   my @A = qw(-aref pepe -aref lojz -href drek=shit -href joska=boob);
   $cfg->parse(\@A);
+
+  # When warnings are on and config entries are used just once:
+  #   use vars qw($SIMPLE $AREF $Kazaan::HREF);
+  # or just, as the above does not work with perl 5.6:
+  no warnings;
 
   print (($SIMPLE eq 'blak') ? "" : "not ", "ok 1\n");
   print (($AREF->[0] eq 'pepe') ? "" : "not ", "ok 2\n");
